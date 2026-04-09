@@ -15,6 +15,7 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
 - Go
 - PostgreSQL
 - Make
+- golang-migrate
 
 ## Project Structure
 
@@ -32,14 +33,28 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
     - cd student_api
 3. Download Go dependencies
     - go mod tidy
-4. Set required environment variables
-5. Run the app with make
+4. Copy the example env file and update values
+    - Open .env and set your DATABASE_URL and PORT
+5. Create the database in PostgreSQL
+    - createdb student_api
+6. Run the database migrations
+    - make migrate-up
+7. Run the app
     - make run
+
+## Environment Variables 
+This project uses .env file to load configuration. See .env.example for the template.
+| Variable | Description | Example |
+|----------|-------------|---------|
+| DATABASE_URL | PostgreSQL connection string | postgresql://user@localhost:5432/student_api?sslmode=disable |
+| PORT | Port the API server listens on | 8080 |
 
 ## Available Make commands
 - make run - starts application locally.
 - make build - builds the application binary
 - make test - runs all tests in the project
+- make migrate-up - starts migration and create student table 
+- make migrate-down - rolls back the last database migration
 
 ## Running the Application
 1. Run the application with make run
@@ -47,4 +62,4 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
 3. You can verify that the service is working by calling the healthcheck endpoint at /healthcheck.
 
 ## API Endpoints
-- GET/healthcheck - returns the helath status of the service
+- GET /healthcheck - returns the health status of the service
