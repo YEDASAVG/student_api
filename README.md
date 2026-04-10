@@ -9,13 +9,12 @@ It is for developers or users who need to create and manage student data program
 Right now it supports a healthcheck endpoint and student CRUD endpoints will be added next.
 
 ## Tech-Stack
-It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
+It is Built with Go, Gin- Go HTTP framework, PostgreSQL, GORM, Make
 
 ## Prerequisites
 - Go
 - PostgreSQL
 - Make
-- golang-migrate
 
 ## Project Structure
 
@@ -23,8 +22,7 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
 - internal/handlers/ contains the HTTP handlers for API routes
 - internal/models/ contains the data structure used in application
 - internal/db/ contains the database connection and database-related logic
-- migrations/ contains SQL migration files used to create and update the database
-
+- internal/config/ contains the application configuration and environment varibake loading
 ## Getting Started
 
 1. Clone the repo
@@ -37,9 +35,7 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
     - Open .env and set your DATABASE_URL and PORT
 5. Create the database in PostgreSQL
     - createdb student_api
-6. Run the database migrations
-    - make migrate-up
-7. Run the app
+6. Run the app
     - make run
 
 ## Environment Variables 
@@ -53,8 +49,6 @@ This project uses .env file to load configuration. See .env.example for the temp
 - make run - starts application locally.
 - make build - builds the application binary
 - make test - runs all tests in the project
-- make migrate-up - starts migration and create student table 
-- make migrate-down - rolls back the last database migration
 
 ## Running the Application
 1. Run the application with make run
