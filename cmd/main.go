@@ -3,31 +3,36 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 
+	"github.com/YEDASAVG/student_api/internal/config"
 	"github.com/YEDASAVG/student_api/internal/db"
+	"github.com/YEDASAVG/student_api/internal/models"
 	"github.com/gin-gonic/gin"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load()
+	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("Error loading config:", err)
 	}
-
-	pool, err := db.ConnectDB()
+	database, err := db.ConnectDB(cfg.DatabaseURL)
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
-	defer pool.Close()
+	sqlDB, err := database.DB()
+	if err != nil {
+		log.Fatal("Failed to get database instance", err)
+	}
+	defer sqlDB.Close()
+
+	database.AutoMigrate(&models.Student{})
+
 	router := gin.Default()
 
-	router.GET("/healthcheck", func(ctx *gin.Context) {
+	router.GET("/healthcheck", func(ctx *gin.Context) { // Healthcheck endpoint.
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "OK",
 		})
 	})
-	router.Run(":" + os.Getenv("PORT"))
+	router.Run(":" + cfg.Port)
 }
