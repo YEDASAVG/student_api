@@ -9,7 +9,7 @@ It is for developers or users who need to create and manage student data program
 Right now it supports a healthcheck endpoint and student CRUD endpoints will be added next.
 
 ## Tech-Stack
-It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
+It is Built with Go, Gin- Go HTTP framework, PostgreSQL, GORM, Make
 
 ## Prerequisites
 - Go
@@ -22,8 +22,7 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
 - internal/handlers/ contains the HTTP handlers for API routes
 - internal/models/ contains the data structure used in application
 - internal/db/ contains the database connection and database-related logic
-- migrations/ contains SQL migration files used to create and update the database
-
+- internal/config/ contains the application configuration and environment varibake loading
 ## Getting Started
 
 1. Clone the repo
@@ -32,9 +31,19 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
     - cd student_api
 3. Download Go dependencies
     - go mod tidy
-4. Set required environment variables
-5. Run the app with make
+4. Copy the example env file and update values
+    - Open .env and set your DATABASE_URL and PORT
+5. Create the database in PostgreSQL
+    - createdb student_api
+6. Run the app
     - make run
+
+## Environment Variables 
+This project uses .env file to load configuration. See .env.example for the template.
+| Variable | Description | Example |
+|----------|-------------|---------|
+| DATABASE_URL | PostgreSQL connection string | postgresql://user@localhost:5432/student_api?sslmode=disable |
+| PORT | Port the API server listens on | 8080 |
 
 ## Available Make commands
 - make run - starts application locally.
@@ -47,4 +56,4 @@ It is Built with Go, Gin- Go HTTP framework, PostgreSQL, golang-migrate, Make
 3. You can verify that the service is working by calling the healthcheck endpoint at /healthcheck.
 
 ## API Endpoints
-- GET/healthcheck - returns the helath status of the service
+- GET /healthcheck - returns the health status of the service
