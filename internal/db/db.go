@@ -1,25 +1,21 @@
+// Package db contains database connection logic.
+
 package db
 
 import (
-	"context"
 	"fmt"
-	"os"
 
-	"github.com/jackc/pgx/v5/pgxpool"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func ConnectDB() (*pgxpool.Pool, error) {
-	dbURL := os.Getenv("DATABASE_URL")
+// ConnectDB establishes a PostgreSQL connection using GORM.
+func ConnectDB(dbURL string) (*gorm.DB, error) {
 
-	pool, err := pgxpool.New(context.Background(), dbURL)
+	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 
 	if err != nil {
 		return nil, fmt.Errorf("Unable to connect to database: %v", err)
 	}
-
-	err = pool.Ping(context.Background())
-	if err != nil {
-		return nil, fmt.Errorf("Unable to ping to database")
-	}
-	return pool, nil
+	return db, nil
 }
